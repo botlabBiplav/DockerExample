@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  nextjs-app:
+    build: .
+    ports:
+      - "4000:4000"  # Map port 3000 of the container to port 3000 on the host
+    environment:
+      - NODE_ENV=production  # Set the environment to production
+    volumes:
+      - .:/app  # Mount the current directory to /app in the container (useful for local development)
+    command: npm run start  # Start the app in production mode
+
+  # Optional: You can create a node_modules service to install dependencies if needed
+  node_modules:
+    image: node:22-alpine  # Use the Node.js image for installing dependencies
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: npm install  # Install the dependencies inside the container
+    entrypoint: ["/bin/sh", "-c", "npm install && tail -f /dev/null"]  # Keep the container alive while installing
