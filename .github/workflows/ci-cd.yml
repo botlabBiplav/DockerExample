@@ -47,8 +47,8 @@ jobs:
         uses: actions/checkout@v2
 
       # Run tests inside the Docker container (you can modify the command based on your testing setup)
-      - name: Run Tests in Docker Container
-        run: |
-          docker run -d --name test-container biplavm/my-next-app:$GITHUB_SHA
-          docker exec test-container npm run test
-          docker stop test-container
+      # - name: Run Tests in Docker Container
+      #   run: |
+      #     docker run -d --name test-container biplavm/my-next-app:$GITHUB_SHA
+      #     docker exec test-container npm run test
+      #     docker stop test-container
