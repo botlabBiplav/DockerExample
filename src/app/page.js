@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="flex justify-center items-center mt-20">
-      <div className="">
+      <div className=" bg-green-300 p-5 text-center">
       <h1>This is Docker Tutorial </h1>
       <h2>There i have added the cicd</h2>
       </div>
