@@ -7,6 +7,7 @@ export default function Home() {
         <h4>Hello World</h4>
       <h1>This is Docker Tutorial </h1>
       <h2>There i have added the cicd</h2>
+      <h4>changes are there </h4>
       </div>
       
     </div>
