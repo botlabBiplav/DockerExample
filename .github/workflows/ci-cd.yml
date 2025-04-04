@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write  # Explicitly allow write access to contents (pushes to the repository)
+  pull-requests: write  # Allow the bot to manage pull requests
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -70,4 +74,4 @@ jobs:
         run: |
           git push origin main
         env:
-          GITHUB_TOKEN: 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  # Ensure the push is authenticated
+          GITHUB_TOKEN: github_11BJRZR3Y0zfZrYLN5A1oX_iOZWbyFKO5g0hIO8bGDU4D2mUAJE435IXKae5ULZolNMLDHBJAEoKyviQ1X  # Ensure the push is authenticated
