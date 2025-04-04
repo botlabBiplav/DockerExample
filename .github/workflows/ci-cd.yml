@@ -3,7 +3,7 @@ name: CI/CD Pipeline for Dockerized App
 on:
   push:
     branches:
-      - testmain  # Trigger on push to the dev branch
+      - testmain  # Trigger on push to the testmain branch
 
 jobs:
   build:
@@ -58,13 +58,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      # Set up Git user identity for Git operations
+      - name: Set up Git user
+        run: |
+          git config --global user.name "botlabBiplav"
+          git config --global user.email "biplav.mazumdar@botlabdynamics.com"
+
       # Fetch latest changes from remote repository
       - name: Fetch latest changes
         run: |
           git fetch origin
 
-      # Merge dev into main if tests pass
-      - name: Merge dockerdev into main
+      # Merge testmain into main if tests pass
+      - name: Merge testmain into main
         run: |
           git checkout main
           git pull origin main  # Ensure local main is up-to-date
