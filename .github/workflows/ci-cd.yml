@@ -1,5 +1,9 @@
 name: CI/CD Pipeline for Dockerized App
 
+permissions:
+  contents: write  # This grants the necessary permission to push changes
+  pull-requests: write  # If you're managing pull requests, you need this too
+
 on:
   push:
     branches:
