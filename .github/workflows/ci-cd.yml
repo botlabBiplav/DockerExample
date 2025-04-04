@@ -70,4 +70,4 @@ jobs:
         run: |
           git push origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Ensure the push is authenticated
+          GITHUB_TOKEN: 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  # Ensure the push is authenticated
