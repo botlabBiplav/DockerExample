@@ -3,17 +3,14 @@ name: CI/CD Pipeline for Dockerized App
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - testmain  # Trigger on push to the testmain branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Check out the code
+      # Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v2
 
@@ -21,12 +18,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Log in to Docker Hub (You need to add your Docker Hub credentials as GitHub secrets)
+      # Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username:  biplavm 
-          password:  biplav001 
+          username: biplavm
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       # Build Docker image
       - name: Build Docker image
@@ -40,15 +37,48 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: build  # This ensures tests run after the build
+    needs: build  # Make sure the build job completes first
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # Run tests inside the Docker container (you can modify the command based on your testing setup)
+      # Run tests inside the Docker container
       - name: Run Tests in Docker Container
         run: |
           docker run -d --name test-container biplavm/my-next-app:$GITHUB_SHA
           docker exec test-container npm run test
           docker stop test-container
+
+  merge:
+    runs-on: ubuntu-latest
+    needs: test  # Ensure merge happens only if tests pass
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      # Set up Git user identity for Git operations
+      - name: Set up Git user
+        run: |
+          git config --global user.name "botlabBiplav"
+          git config --global user.email "biplav.mazumdar@botlabdynamics.com"
+
+      # Fetch latest changes from remote repository
+      - name: Fetch latest changes
+        run: |
+          git fetch origin
+
+      # Merge testmain into main if tests pass
+      - name: Merge testmain into main
+        run: |
+          git checkout main
+          git pull origin main  # Ensure local main is up-to-date
+          git merge origin/testmain --no-ff --allow-unrelated-histories -m "Auto-merge testmain into main after passing tests"
+          
+      # Push the merge to main
+      - name: Push merge to main
+        run: |
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub's token for authentication
