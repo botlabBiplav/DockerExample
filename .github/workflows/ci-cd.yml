@@ -3,7 +3,7 @@ name: CI/CD Pipeline for Dockerized App
 on:
   push:
     branches:
-      - dockerdev  # Trigger on push to the dev branch
+      - testmain  # Trigger on push to the dev branch
 
 jobs:
   build:
@@ -68,7 +68,7 @@ jobs:
         run: |
           git checkout main
           git pull origin main  # Ensure local main is up-to-date
-          git merge origin/dockerdev --no-ff -m "Auto-merge dockerdev into main after passing tests"
+          git merge origin/testmain --no-ff --allow-unrelated-histories -m "Auto-merge testmain into main after passing tests"
           
       # Push the merge to main
       - name: Push merge to main
