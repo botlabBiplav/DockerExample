@@ -63,7 +63,7 @@ jobs:
         run: |
           git checkout main
           git pull origin main
-          git merge origin/dev --no-ff -m "Auto-merge dev into main after passing tests"
+          git merge origin/testdev --no-ff -m "Auto-merge testdev into main after passing tests"
         continue-on-error: true  # Continue even if merge fails
 
       - name: Push merge to main
