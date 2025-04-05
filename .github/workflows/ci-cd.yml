@@ -77,10 +77,8 @@ jobs:
         run: |
           git checkout main
           git pull origin main  # Ensure local main is up-to-date
-          git merge origin/testmain --no-ff --allow-unrelated-histories -m "Auto-merge testmain into main after passing tests"
-          git log --oneline -n 5  # Confirm merge is successful
-          git diff --stat  # Check for changes after merge
-
+          git merge origin/testmain --no-ff --allow-unrelated-histories  -m "Auto-merge testmain into main after passing tests"
+          
       # Push the merge to main
       - name: Push merge to main
         run: |
