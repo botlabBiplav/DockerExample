@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - '*'  # Trigger on push to the testmain branch
+      - '*'  # Trigger on push to any branch
 
 jobs:
   build:
@@ -31,7 +31,7 @@ jobs:
       # Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t biplavm/my-next-app:$GITHUB_SHA .
+          docker build -t biplavm/my-next-app:$GITHUB_SHA .  # Use commit SHA for versioning
 
       # Push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
@@ -72,15 +72,21 @@ jobs:
         run: |
           git fetch origin
 
-      # Merge testmain into main if tests pass
+      # Get the branch name dynamically
+      - name: Get branch name
+        id: branch_name
+        run: |
+          echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+
+      # Merge the dynamically obtained branch into main
       - name: Merge dynamic branch into main
         run: |
           git checkout main
           git pull origin main  # Ensure local main is up-to-date
           git merge origin/${{ steps.branch_name.outputs.branch }} --allow-unrelated-histories -X theirs -m "Auto-merge ${{ steps.branch_name.outputs.branch }} into main after passing tests"
-
           git log --oneline -n 5  # Confirm merge is successful
-          git diff --stat  # Check for changes after merge          
+          git diff --stat  # Check for changes after merge
+
       # Push the merge to main
       - name: Push merge to main
         run: |
