@@ -7,6 +7,7 @@ export default function Home() {
         <h4>Hello World</h4>
         <h1>This is Docker Tutorial </h1>
         <h3 className="bg-red-500">We are checking the docker cicd </h3>
+        <h4 className="text-green-500">This is the upadated code to check the docker integration </h4>
       </div>
     </div>
   );
