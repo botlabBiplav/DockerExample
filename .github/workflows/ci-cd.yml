@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - testmain  # Trigger on push to the testmain branch
+      - '*'  # Trigger on push to the testmain branch
 
 jobs:
   build:
@@ -73,11 +73,12 @@ jobs:
           git fetch origin
 
       # Merge testmain into main if tests pass
-      - name: Merge testmain into main
+      - name: Merge dynamic branch into main
         run: |
           git checkout main
           git pull origin main  # Ensure local main is up-to-date
-          git merge origin/testmain  --allow-unrelated-histories  -X theirs -m "Auto-merge testmain into main after passing tests"
+          git merge origin/${{ steps.branch_name.outputs.branch }} --allow-unrelated-histories -X theirs -m "Auto-merge ${{ steps.branch_name.outputs.branch }} into main after passing tests"
+
           git log --oneline -n 5  # Confirm merge is successful
           git diff --stat  # Check for changes after merge          
       # Push the merge to main
